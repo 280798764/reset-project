@@ -20,86 +20,10 @@ export default {
   computed: {
     // 参数列表集合
     enumParams () { return tool.getEnumParams() },
-    // 申请单状态码
-    applyStatusList () { return this.enumParams.applyStatus },
-    // 申请方式
-    applyTypeDetailList () { return this.enumParams.applyTypeDetail },
-    // 申请单申请类别
-    applyTypeList () { return this.enumParams.applyType },
-    // 申请单申请类别 商务类
-    applyTypeBusinessList () { return this.enumParams.applyTypeBusiness },
-    // 需求单状态
-    requireStatusList () { return this.enumParams.requireStatus },
-    // 送修单状态码
-    sendToRepairStatusList () { return this.enumParams.sendToRepairStatus },
-    // 保修状态
-    warrantyStatusList () { return this.enumParams.warrantyStatus },
-    // 更换单状态
-    replacementStatusList () { return this.enumParams.replacementStatus },
-    // 更换单状态(审核专用)
-    replacementStatusAuditList () { return this.enumParams.replacementStatusAudit },
-    // 出库单状态
-    stockOutStatusList () { return this.enumParams.stockOutStatus },
-    // 出库单类型
-    stockOutTypeList () { return this.enumParams.stockOutType },
-    // 入库单状态
-    stockInStatusList () { return this.enumParams.stockInStatus },
-    // 出库 备件去向
-    wherePartGoneList () { return this.enumParams.wherePartGone },
-    // 返修单状态
-    repairReturnStatusList () { return this.enumParams.repairReturnStatus },
-    // 商务类型
-    businessTypeList () { return this.enumParams.businessType },
-    // 商务单状态
-    businessStatusList () { return this.enumParams.businessStatus },
-    // 商务单状态
-    contractStatusList () { return this.enumParams.contractStatus },
-    // 发货单状态
-    stockDeliverList () { return this.enumParams.stockDeliverList },
-    // 开发者类型
-    appStates () { return this.enumParams.appStates },
-    // 应用状态
-    developType () { return this.enumParams.developType },
-    // 支付方式
-    paymentModes () { return this.enumParams.paymentModes },
-    // 订单状态
-    orderStates () { return this.enumParams.orderStates },
-    // 订单-批量操作
-    orderBatchOperation () { return this.enumParams.orderBatchOperation },
-    // 订单-评价状态
-    appraiseStates () { return this.enumParams.appraiseStates },
-    // 财务管理-收款-处理状态
-    treatmentStates () { return this.enumParams.treatmentStates },
-    // 用户管理-是否绑定企业
-    bindEnterprise () { return this.enumParams.bindEnterprise },
-    // 认证状态
-    certificationStates () { return this.enumParams.certificationStates },
-    // 申请状态
-    applicationStatus2 () { return this.enumParams.applicationStatus2 },
-    // 申请状态2
-    applicationStatus () { return this.enumParams.applicationStatus },
-    // 用户管理-申请状态
-    userApplicationStatus () { return this.enumParams.userApplicationStatus },
-    // 申请类型
-    applicantType () { return this.enumParams.applicantType },
-    // 广告页
-    adPage () { return this.enumParams.adPage },
-    // 广告位
-    adPlace () { return this.enumParams.adPlace },
-    // 广告状态
-    adStatus () { return this.enumParams.adStatus },
-    // 订单咨询
-    orderConsulting () { return this.enumParams.orderConsulting },
-    // 交易流程说明
-    transactionProcess () { return this.enumParams.transactionProcess },
-    // 交易流程说明-二级目录
-    transactionProcess2 () { return this.enumParams.transactionProcess2 },
-    // 开发环境申请-物流信息
-    typeLogistics () { return this.enumParams.typeLogistics },
-    // 用户管理-绑定类型
-    bindType () { return this.enumParams.bindType },
-    // 帮助须知---所属平台
-    platform () { return this.enumParams.platform }
+    // 业务类型
+    userRightTypeMap () { return this.enumParams.userRightTypeMap },
+    // 联网进度
+    networkScheduleList () { return this.enumParams.networkScheduleList }
   },
   created () {
     this.roleType = sessionStorage.getItem('roleType')

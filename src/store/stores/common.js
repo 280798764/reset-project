@@ -8,6 +8,14 @@ const state = {
 const mutations = {
   'm:common/setUsername' (state, username) {
     state.username = username
+  },
+  'm:common/changeNavList' (state, newVal) {
+    let navList = newVal
+    for (let item of navList) {
+      item.isOpen = false
+    }
+    state.a = 1
+    state.navList = navList
   }
 }
 

@@ -2,107 +2,216 @@
 <template>
   <section class="loginInfo">
     <div class="header">
-      <!-- <div class="logo"><img src="../../assets/image/header-Logo.png" alt=""/></div> -->
-      <div class="title"><span></span>iSESOL MALL 管理后台</div>
+      <div class="logo"><img src="~@/assets/images/header-Logo.png" alt=""></div>
+      <div class="title"><span></span>i5OS应用商城管理后台</div>
     </div>
-    <div class="bg"></div>
-    <div class="content">
-      <div class="content-top">
-        <!-- <img src="../../assets/image/loginTop.png" alt=""/> -->
-      </div>
-      <div class="content-info">
-        <i class="iconfont icon-3"></i>
-        <i class="iconfont icon-guanbi left" @click="clearUsername"></i>
-        <input type="text" id="mobile" v-model="params.mobile" placeholder="请输入账号">
-        <i class="iconfont icon-password"></i>
-        <i class="iconfont icon-guanbi left" @click="clearPassword"></i>
-        <input type="password" id="password" v-model="params.password" placeholder="请输入密码">
-        <div class="verify">
-          <i class="iconfont icon-iconzhenghe0729fuzhi93 special"></i>
-          <input type="text" v-model="params.verifyValue" @keyup.enter="login" placeholder="请输入验证码 ">
-          <div class="verifyImg" @click="getImg"><img :src="verifyImg"></div>
+    <!--<div class="bg"></div>-->
+    <div class="content-wraper">
+      <div class="content">
+        <div class="content-header">
+          <img src="~@/assets/images/header-Logo-top.png">
+          <span>i5OS应用商城管理后台</span>
         </div>
-        <div class="error-info" v-if="errorInfoShow">
-          {{errorInfo}}
+        <div class="line-bottom"></div>
+        <div class="content-top">
         </div>
-        <div class="button">
-          <button class="reset" @click="reset">重置</button>
-          <button class="login" @click="login">登录</button>
+        <div class="content-info" @keyup.enter="login">
+          <ul>
+            <li>
+              <i class="pre-icon icon-phone"></i>
+              <input name="username" type="text" v-model.trim="paramsLogin.account" class="long-text" placeholder="请输入手机号码">
+            </li>
+            <li>
+              <i class="pre-icon icon-pwd"></i>
+              <input name="password" type="password" v-model.trim="paramsLogin.password" class="long-text" placeholder="请输入密码">
+            </li>
+            <li>
+              <i class="pre-icon icon-code"></i>
+              <input class="text" type="text" v-model.trim="paramsLogin.verifyValue" placeholder="请输入图片验证码" maxlength="6">
+              <div class="verify-code" @click="getVerifyImage">
+                <img :src="verifyImageSrc" alt="">
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="radio" @click="saveUser">
+          <Radio label="apple" v-model="checked">
+            <span>记住用户名？</span>
+          </Radio>
+        </div>
+        <div class="operate-btns">
+          <div class="btn-yellow" @click="login(paramsLogin.account)">登录<span class="login-right"></span></div>
         </div>
       </div>
     </div>
+    <footer class="copyright-wrapper">
+      <div>
+        <span>Copyright©2007-2014  沈机（上海）智能系统研发设计有限公司  All right reserved.   沪ICP备17028152号-2</span>
+      </div>
+    </footer>
   </section>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
+// import { menuUrls } from '@/const/menu'
+import util from '@/utils/util'
+// import tool from '@/utils/tool'
 export default {
   data () {
     return {
-      errorInfoShow: false,
+      captchaUuid: '',
+      checked: false, // radio
+      verifyImageSrc: '',
       errorInfo: '', // 错误信息提示
+      verifyImg: '',
       params: {
-        // loginAccount: '',
-        mobile: '',
-        password: '',
-        verifyKey: '',
-        verifyValue: ''
+        verifyKey: ''
+      },
+      paramsLogin: {
+        account: '', // 登录名
+        password: '', // 密码
+        verifyKey: '', // 验证码
+        verifyValue: '' // 验证码
       }
-    }
-  },
-  computed: mapState({
-    // verifyImg: state => state.common.account.verifyImg
-  }),
-  methods: {
-    init () {
-      this.getImg()
-    },
-    getImg () {
-      this.params.verifyKey = Math.random()
-      this.$store.dispatch('a:account/getVerifyImg', this.params.verifyKey)
-    },
-    login () {
-      // 非空字段验证
-      if (!this.params.mobile) {
-        this.errorInfo = '请输入账号!'
-        this.errorInfoShow = true
-      } else if (!this.params.password) {
-        this.errorInfo = '请输入密码!'
-        this.errorInfoShow = true
-      } else {
-        this.$store.dispatch('a:common/account/login', this.params).then(
-          res => {
-            if (this.$route.query.redirect) {
-              this.$router.push(this.$route.query.redirect)
-            } else {
-              this.$router.push('/dashboard')
-            }
-          },
-          rej => {
-            this.getImg()
-          }
-        )
-      }
-    },
-    reset () {
-      this.params.userName = ''
-      this.params.password = ''
-      this.params.verifyValue = ''
-    },
-    clearUsername () {
-      this.params.userName = ''
-    },
-    clearPassword () {
-      this.params.password = ''
     }
   },
   created () {
     this.init()
+    sessionStorage.clear()
+  },
+  mounted () {
+    // 读取本地的用户名
+    this.getLocal()
+    // 获取验证码(调接口)
+    this.paramsLogin.verifyKey = util.uuid(32)
+    this.$store.dispatch('a:login/getImage', {verifyKey: this.paramsLogin.verifyKey}).then(
+      res => {
+        // this.paramsLogin.verifyKey = res
+        this.verifyImageSrc = 'data:image/jpg;base64,' + res
+      },
+      rej => {
+        this.alert(rej.errorInfo, 'error')
+      }
+    )
+  },
+  methods: {
+    saveUser () {
+      this.checked = !this.checked
+    },
+    // 设置本地的用户名
+    setLocal () {
+      localStorage.setItem('userName', this.paramsLogin.account)
+      localStorage.setItem('checked', this.checked)
+    },
+    // 读取本地的用户名
+    getLocal () {
+      this.paramsLogin.account = localStorage.getItem('userName')
+      this.checked = Boolean(localStorage.getItem('checked'))
+    },
+    // 清除本地的用户名
+    clearLocal () {
+      localStorage.setItem('userName', '')
+      localStorage.setItem('checked', '')
+    },
+    // 获取图片验证码
+    getVerifyImage () {
+      this.verifyImageKey = Math.random()
+      this.$store.dispatch('a:login/getVerifyImage', this.paramsLogin.verifyKey).then(
+        res => {
+          // this.paramsLogin.verifyKey = res.verifyKey
+          this.verifyImageSrc = 'data:image/jpg;base64,' + res
+        }
+      )
+    },
+    // 初始化验证码
+    init () {
+      this.getVerifyImage()
+    },
+    // 登录
+    login (userName) {
+      // 判断复选框是否被勾选
+      if (this.checked === true) {
+        // 传入账号名和保存天数2个参数
+        this.setLocal(userName, 7)
+      } else {
+        // 清空Local
+        this.clearLocal()
+      }
+      // 非空字段验证
+      if (!this.paramsLogin.account) {
+        this.errorInfo = '请输入手机号码!'
+        this.alert(this.errorInfo, 'error')
+      } else if (!this.paramsLogin.password) {
+        this.errorInfo = '请输入密码!'
+        this.alert(this.errorInfo, 'error')
+      } else if (!this.paramsLogin.verifyValue) {
+        this.errorInfo = '请输入验证码!'
+        this.alert(this.errorInfo, 'error')
+      } else {
+        this.$store.dispatch('a:login/login', this.paramsLogin).then(
+          res => {
+            sessionStorage.setItem('userToken', res.token)
+            this.getMenus(res.token)
+            this.$router.push('/NetworkInfo/Index')
+            /* if (this.$route.query.redirect) {
+              this.$router.push(this.$route.query.redirect)
+            } else {
+              if (!res.userModule.length) {
+                this.alert('此用户无权限登录！', 'error')
+              } else {
+                sessionStorage.setItem('userToken', res.token)
+                sessionStorage.setItem('name', res.memberName)
+                sessionStorage.setItem('i5osMenu', JSON.stringify(res.userModule))
+                this.$store.commit('m:common/changeNavList', res.userModule)
+                let routerList = this.getRouters(res.userModule)
+                this.$router.push(routerList[0])
+                this.$Message.success('登录成功！')
+              }
+            } */
+          },
+          rej => {
+            this.paramsLogin.verifyValue = ''
+            this.alert(rej.errorInfo, 'error')
+            this.getVerifyImage()
+          }
+        )
+      }
+    },
+    getMenus () {
+      this.$store.dispatch('a:login/getMenus', { appId: 'operation' }).then(
+        res => {
+          sessionStorage.setItem('navList', JSON.stringify(res || []))
+        }
+      )
+    }
+    // 获取有权限的router数组
+    /*  getRouters (userModule) {
+      let routerList = []
+      for (let i = 0; i < userModule.length; i++) {
+        let pages = userModule[i].pages
+        for (let j = 0; j < pages.length; j++) {
+          let item = menuUrls.find(item => {
+            return pages[j].pageId === item.pageId
+          })
+          if (item) {
+            if (typeof item.url === 'string') {
+              routerList.push(item.url)
+            } else {
+              routerList.push(...item.url) // 数组的场合
+            }
+          }
+        }
+      }
+      if (routerList.length) {
+        sessionStorage.setItem('routerList', JSON.stringify(routerList))
+        return routerList
+      }
+      return ''
+    } */
   }
 }
 </script>
 
 <style lang="less" scoped>
-  @import '~@/assets/styles/pages/login/login.less';
+  @import '~@/assets/styles/modules/login.less';
 </style>

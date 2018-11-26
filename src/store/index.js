@@ -4,9 +4,10 @@ import Vuex from 'vuex'
 
 import common from './stores/common'
 import file from './stores/file'
-import homepage from './stores/homepage'
+// import homepage from './stores/homepage'
 import demoPageOne from './stores/demoPageOne'
 import networkProfile from './stores/networkProfile'
+import login from './stores/login'
 
 Vue.use(Vuex)
 
@@ -15,8 +16,9 @@ export default new Vuex.Store({
   modules: {
     common,
     file,
-    homepage,
+    // homepage,
     demoPageOne,
-    networkProfile
+    networkProfile,
+    login
   }
 })

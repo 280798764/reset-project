@@ -2,20 +2,22 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import iview from 'iview'
 import login from './routes/login'
-import homepage from './routes/homepage'
-import demoPageOne from './routes/demoPageOne'
+// import homepage from './routes/homepage'
+import NetworkInfo from './routes/NetworkInfo'
+import DeviceMonitor from './routes/DeviceMonitor'
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     ...login,
-    ...homepage,
-    ...demoPageOne,
+    // ...homepage,
+    ...NetworkInfo,
+    ...DeviceMonitor,
     {
       path: '/*',
       redirect: to => {
-        return '/index'
+        return '/login'
       }
     }
   ]

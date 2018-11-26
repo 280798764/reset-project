@@ -75,8 +75,9 @@ export default {
     getTableList (cmd, params) {
       this.$store.dispatch(cmd, {parameters: {...params}, ...this.pageInfoReq}).then(
         res => {
-          this.tbody = res.list
-          this.pageInfo = res.pageInfo
+          this.tbody = res.content
+          this.totalElements = Number(res.totalElements)
+          // this.pageInfo = res.pageInfo
         },
         rej => {
           this.alert(rej.errorInfo, 'error')
