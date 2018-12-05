@@ -569,3 +569,29 @@ body {
   border: none;
   height: auto;
 }
+/* 滚动条样式 */
+.custom-scroll {
+  /* Webkit Only */
+  &::-webkit-scrollbar
+  {
+    width: 6px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-track-piece
+  {
+    background-color: fade(@colorGray, 50%);
+    -webkit-border-radius: 6px;
+  }
+  &::-webkit-scrollbar-thumb:vertical
+  {
+    height: 5px;
+    background-color: @colorBgDark;
+    -webkit-border-radius: 6px;
+  }
+  &::-webkit-scrollbar-thumb:horizontal
+  {
+    width: 5px;
+    background-color: @colorBgDark;
+    -webkit-border-radius: 6px;
+  }
+}

@@ -36,7 +36,6 @@ export default {
   },
   created () {
     this.navList = JSON.parse(sessionStorage.getItem('navList'))
-    console.log(this.navList, 'this.navList')
   },
   methods: {
     toggleNav (index) {

@@ -3,14 +3,14 @@
   <section class="loginInfo">
     <div class="header">
       <div class="logo"><img src="~@/assets/images/header-Logo.png" alt=""></div>
-      <div class="title"><span></span>i5OS应用商城管理后台</div>
+      <div class="title"><span></span> isesol设备监控平台</div>
     </div>
     <!--<div class="bg"></div>-->
     <div class="content-wraper">
       <div class="content">
         <div class="content-header">
           <img src="~@/assets/images/header-Logo-top.png">
-          <span>i5OS应用商城管理后台</span>
+          <span> isesol设备监控平台</span>
         </div>
         <div class="line-bottom"></div>
         <div class="content-top">

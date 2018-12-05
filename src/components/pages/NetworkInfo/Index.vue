@@ -145,18 +145,6 @@
           </Tabs>
         </template>
       </section>
-      <!--<section class="nav-tab">
-        <Tabs v-model="selectName" @on-click="tabClick">
-          <Tab-pane :label="`默认列表()`" key="key1" name="name5"></Tab-pane>
-          <Tab-pane :label="`联网完成设备()`" key="key5" name="name1"></Tab-pane>
-          <Tab-pane :label="`等待联网设备()`" key="key2"></Tab-pane>
-          <Tab-pane :label="`平台联网设备（累计）()`" key="key3"></Tab-pane>
-          <Tab-pane :label="`客户数()`" key="key4"></Tab-pane>
-        </Tabs>
-      </section>-->
-      <!-- 表单展示 -->
-      <section class="table-wrapper">
-      </section>
     </section>
   </section>
 </template>

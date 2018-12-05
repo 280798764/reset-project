@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 import common from './stores/common'
 import file from './stores/file'
 // import homepage from './stores/homepage'
-import demoPageOne from './stores/demoPageOne'
+import DeviceMonitor from './stores/DeviceMonitor'
 import networkProfile from './stores/networkProfile'
 import login from './stores/login'
 
@@ -17,7 +17,7 @@ export default new Vuex.Store({
     common,
     file,
     // homepage,
-    demoPageOne,
+    DeviceMonitor,
     networkProfile,
     login
   }
