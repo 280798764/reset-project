@@ -33,6 +33,46 @@ const actions = {
       parameters,
       userToken: sessionStorage.getItem('userToken')
     })
+  },
+  /* 04 实时监控-获取总数 */
+  'a:TotalDevice/basicTarget' ({commit}, parameters) {
+    return ajax.api({
+      cmd: 'operation/equipment/basicTarget',
+      parameters,
+      userToken: sessionStorage.getItem('userToken')
+    })
+  },
+  /* 04 异常预警-index */
+  'a:ExceptionState/getNowExceptionList' ({commit}, parameters) {
+    return ajax.api({
+      cmd: 'operation/upWorkorder/getNowExceptionList',
+      parameters,
+      userToken: sessionStorage.getItem('userToken')
+    })
+  },
+  /* 04 异常预警-index */
+  'a:ExceptionState/todaySolveList' ({commit}, parameters) {
+    return ajax.api({
+      cmd: 'operation/exception/todaySolveList',
+      parameters,
+      userToken: sessionStorage.getItem('userToken')
+    })
+  },
+  /* 04 异常预警-index */
+  'a:ExceptionState/waitingSolveList' ({commit}, parameters) {
+    return ajax.api({
+      cmd: 'operation/exception/waitingSolveList',
+      parameters,
+      userToken: sessionStorage.getItem('userToken')
+    })
+  },
+  /* 04 位置管理-index */
+  'a:position/getFactoryBasics' ({commit}, parameters) {
+    return ajax.api({
+      cmd: 'cngl/factory/getFactoryBasics',
+      ...parameters,
+      userToken: sessionStorage.getItem('userToken')
+    })
   }
 }
 

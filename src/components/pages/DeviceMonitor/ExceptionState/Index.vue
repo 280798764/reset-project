@@ -57,7 +57,7 @@
       <section class="nav-tab">
         <template>
           <Tabs value="name1" @on-click="tabClick">
-            <TabPane :label="`默认列表(${todayHappen})`" name="name1">
+            <TabPane :label="`默认列表(${totalElements})`" name="name1">
               <section class="list-wrapper custom-scroll scroll">
                 <custom-table :thead="thead2" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
@@ -131,18 +131,20 @@
             </TabPane>
             <TabPane :label="`待处理异常预警（截止当时）(${waitingSolveCount})`" name="name4">
               <section class="list-wrapper custom-scroll scroll">
-                <custom-table :thead="thead" :tbody="tbody" :scroll="true">
+                <custom-table :thead="thead2" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
+                    <td><div>{{props.item.mtNo}}</div></td>
+                    <td><div>{{props.item.mtType}}</div></td>
+                    <td><div>{{props.item.happenTime}}</div></td>
+                    <td><div>{{props.item.exceptionMsg}}</div></td>
+                    <td><div>{{props.item.runTimeCompare}}秒</div></td>
+                    <td><div>{{props.item.userName}}</div></td>
                     <td><div>{{props.item.ownerName}}</div></td>
-                    <td><div>{{props.item.useRightOwnerName}}</div></td>
-                    <td><div>{{props.item.count}}</div></td>
-                    <td><div>{{props.item.networkSchedule}}</div></td>
-                    <td><div>{{props.item.waitingNum}}</div></td>
-                    <td><div>{{props.item.networkSchedule}}</div></td>
-                    <td><div>{{props.item.type}}</div></td>
+                    <td><div>{{props.item.status}}</div></td>
+                    <td><div>{{props.item.offlineTime}}</div></td>
                     <td class="operations-td wid-100px">
                       <div class="operations flex-center">
-                        <div class="btn btn-detail" @click="IndexUpOrDown()">设备列表</div>
+                        <div class="btn btn-detail" @click="IndexUpOrDown()">备注</div>
                       </div>
                     </td>
                   </template>
@@ -169,6 +171,7 @@ export default {
   mixins: [mixinsTable, mixinsInfo],
   data () {
     return {
+      totalElements: '',
       thead: thead,
       thead2: thead2,
       tbody: [],
@@ -176,7 +179,8 @@ export default {
       todaySolve: '',
       waitingSolveCount: '',
       userNameIdList: [], // 使用权
-      exceptionTypeList: [] // 使用权
+      exceptionTypeList: [], // 使用权
+      tabCmd: 'a:ExceptionState/exceptionList'
     }
   },
   mounted () {
@@ -184,11 +188,25 @@ export default {
     this.getUserType()
     this.getExceptionTypeList()
     this.getList()
+    this.getTableList(this.tabCmd, this.params)
   },
   methods: {
-    searchTab () {
+    tabClick (name) {
+      if (name === 'name1') {
+        this.tabCmd = 'a:ExceptionState/exceptionList'
+        this.getTableList(this.tabCmd, this.params)
+      } else if (name === 'name2') {
+        this.tabCmd = 'a:ExceptionState/getNowExceptionList'
+        this.getTableList(this.tabCmd, this.params)
+      } else if (name === 'name3') {
+        this.tabCmd = 'a:ExceptionState/todaySolveList'
+        this.getTableList(this.tabCmd, this.params)
+      } else if (name === 'name4') {
+        this.tabCmd = 'a:ExceptionState/waitingSolveList'
+        this.getTableList(this.tabCmd, this.params)
+      }
     },
-    tabClick () {
+    searchTab () {
     },
     exceptionCount () {
       this.$store.dispatch('a:DeviceMonitor/exceptionCount', {}).then(
@@ -221,6 +239,15 @@ export default {
       this.$store.dispatch('a:ExceptionState/exceptionList', {}).then(
         res => {
           this.tbody = res.content || []
+        },
+        rej => {
+        }
+      )
+    },
+    getNowExceptionList () {
+      this.$store.dispatch('a:ExceptionState/getNowExceptionList', {}).then(
+        res => {
+          this.tbody2 = res.content || []
         },
         rej => {
         }

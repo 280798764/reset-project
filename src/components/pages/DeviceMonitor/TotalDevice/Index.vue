@@ -57,7 +57,7 @@
       <section class="nav-tab">
         <template>
           <Tabs value="name1" @on-click="tabClick">
-            <TabPane :label="`今日异常发生(${todayHappen})`" name="name1">
+            <TabPane :label="`今日联网成功设备(${successNum})`" name="name1">
               <section class="list-wrapper custom-scroll scroll">
                 <custom-table :thead="thead2" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
@@ -80,7 +80,7 @@
                 <!--<pagination v-if="pageInfo.totalPageCount" :pageInfo="pageInfo" @pageChange="pageChange"></pagination>-->
               </section>
             </TabPane>
-            <TabPane :label="`今日异常发生(${todayHappen})`" name="name2">
+            <TabPane :label="`当前在线设备(${onlineNum})`" name="name2">
               <section class="list-wrapper custom-scroll scroll">
                 <custom-table :thead="thead2" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
@@ -103,7 +103,7 @@
                 <!--<pagination v-if="pageInfo.totalPageCount" :pageInfo="pageInfo" @pageChange="pageChange"></pagination>-->
               </section>
             </TabPane>
-            <TabPane :label="`今日异常解决(${todaySolve})`" name="name3">
+            <TabPane :label="`当前离线设备(${offlineNum})`" name="name3">
               <section class="list-wrapper custom-scroll scroll">
                 <custom-table :thead="thead2" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
@@ -126,7 +126,7 @@
                 <!--<pagination v-if="pageInfo.totalPageCount" :pageInfo="pageInfo" @pageChange="pageChange"></pagination>-->
               </section>
             </TabPane>
-            <TabPane :label="`待处理异常预警（截止当时）(${waitingSolveCount})`" name="name4">
+            <TabPane :label="`今日上线设备(${todayOnlineNum})`" name="name4">
               <section class="list-wrapper custom-scroll scroll">
                 <custom-table :thead="thead" :tbody="tbody" :scroll="true">
                   <template slot="item" slot-scope="props">
@@ -174,7 +174,11 @@ export default {
       waitingSolveCount: '',
       userNameIdList: [],
       userRightTypeMap: [],
-      networkScheduleList: []
+      networkScheduleList: [],
+      offlineNum: '', // 当前离线设备
+      onlineNum: '', // 当前在线设备
+      successNum: '', // 今日联网成功设备
+      todayOnlineNum: '' // 今日上线设备
     }
   },
   mounted () {
@@ -184,11 +188,12 @@ export default {
     searchTab () {
     },
     exceptionCount () {
-      this.$store.dispatch('a:DeviceMonitor/exceptionCount', {}).then(
+      this.$store.dispatch('a:TotalDevice/basicTarget', {}).then(
         res => {
-          this.todayHappen = res.todayHappen
-          this.todaySolve = res.todaySolve
-          this.waitingSolveCount = res.waitingSolveCount
+          this.offlineNum = res.offlineNum
+          this.onlineNum = res.onlineNum
+          this.successNum = res.successNum
+          this.todayOnlineNum = res.todayOnlineNum
         }
       )
     }

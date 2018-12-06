@@ -75,8 +75,15 @@ export default {
     getTableList (cmd, params) {
       this.$store.dispatch(cmd, {parameters: {...params}, ...this.pageInfoReq}).then(
         res => {
-          this.tbody = res.content
-          this.totalElements = Number(res.totalElements)
+          if (cmd === 'a:ExceptionState/exceptionList') {
+            this.totalElements = Number(res.totalElements)
+          } else if (cmd === 'a:position/getFactoryBasics') {
+            this.tbody = res.list
+            this.total = Number(res.total)
+            this.pageInfo.totalPageCount = res.total
+          } else {
+            this.tbody = res.content
+          }
           // this.pageInfo = res.pageInfo
         },
         rej => {
